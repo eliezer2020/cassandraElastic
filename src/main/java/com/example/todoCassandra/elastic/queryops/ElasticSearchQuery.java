@@ -1,18 +1,20 @@
-package com.example.todoCassandra.elastic;
+package com.example.todoCassandra.elastic.queryops;
 
 import com.example.todoCassandra.repository.TodoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+
 
 public class ElasticSearchQuery {
 
-  @Autowired
-  ElasticsearchOperations elasticTemplate;
 
-  private final String indexname="todolist";
+
+  @Autowired
+  ElasticTodoServiceImpl todoElsService;
+
+
 
   public void createUpdateDoc(TodoEntity entity){
-
+  todoElsService.saveEntityToDocument(entity);
   }
 
 }

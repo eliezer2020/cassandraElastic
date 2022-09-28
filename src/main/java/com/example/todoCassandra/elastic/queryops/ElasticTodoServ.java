@@ -1,4 +1,7 @@
-package com.example.todoCassandra.elastic;
+package com.example.todoCassandra.elastic.queryops;
+
+import org.springframework.stereotype.Component;
+
 
 public interface ElasticTodoServ<T> {
 

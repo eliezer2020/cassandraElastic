@@ -1,5 +1,6 @@
 package com.example.todoCassandra.controller;
 
+import com.example.todoCassandra.elastic.queryops.ElasticTodoServiceImpl;
 import com.example.todoCassandra.repository.TodoEntity;
 import com.example.todoCassandra.repository.TodoRepo;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class TodoControllers {
 
   @Autowired
   TodoRepo repo;
+  @Autowired
+  ElasticTodoServiceImpl elasticTodoService;
   private final Map<UUID, TodoEntity> mockMap = new ConcurrentHashMap<>();
 
   @GetMapping
@@ -69,7 +72,13 @@ public class TodoControllers {
     todo_.setTitle(todo.getTitle());
     todo_.setOrder(todo.getOrder());
     todo_.setUuid(UUID.randomUUID());
-    repo.save(todo_);
+
+    try{
+      repo.save(todo_);
+      elasticTodoService.saveEntityToDocument(todo_);
+    }catch (Exception e){
+      System.out.println("   ********   ingestion exception is :"+e);
+    }
     return new ResponseEntity<>(HttpStatus.CREATED);
 
   }
